@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./App.css";
+import PhoneDetails from "./components/PhoneDetails";
 import PhoneList from "./components/PhoneList";
 
 function App() {
@@ -21,26 +22,39 @@ function App() {
 
   const getPhoneDetails = async (id) => {
     try {
-      console.log(id);
+      const response = await axios(`http://localhost:5005/api/phones/${id}`);
+      console.log(response);
+      setPhoneDetails(response.data);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div className="App">
       <h1>The Phone Cave</h1>
-      <div>
-        <div>
+      <div className="container">
+        <div className="all-phone-list">
           {!allPhones ? (
-            <h4>Buscando...</h4>
+            <h4>Searching...</h4>
           ) : (
             <ul>
               {allPhones.map((each) => (
-                <PhoneList key={each.id} id={each._id} name={each.name} getPhoneDetails={getPhoneDetails} />
+                <PhoneList
+                  key={each.id}
+                  id={each._id}
+                  name={each.name}
+                  getPhoneDetails={getPhoneDetails}
+                />
               ))}
             </ul>
           )}
+        </div>
+        <div className="phone-details">
+          {!phoneDetails ? 
+          <h4>Select a Phone</h4> : 
+          <PhoneDetails phoneDetails={phoneDetails}/>
+          }
         </div>
       </div>
     </div>
