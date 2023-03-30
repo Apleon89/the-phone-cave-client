@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { PacmanLoader } from "react-spinners";
 import "./App.css";
 import PhoneDetails from "./components/PhoneDetails";
 import PhoneList from "./components/PhoneList";
@@ -23,7 +24,6 @@ function App() {
   const getPhoneDetails = async (id) => {
     try {
       const response = await axios(`http://localhost:5005/api/phones/${id}`);
-      console.log(response);
       setPhoneDetails(response.data);
     } catch (error) {
       console.log(error);
@@ -36,7 +36,10 @@ function App() {
       <div className="container">
         <div className="all-phone-list">
           {!allPhones ? (
-            <h4>Searching...</h4>
+            <>
+              <h4>Searching...</h4>
+              <PacmanLoader />
+            </>
           ) : (
             <ul>
               {allPhones.map((each) => (
@@ -51,12 +54,16 @@ function App() {
           )}
         </div>
         <div className="phone-details">
-          {!phoneDetails ? 
-          <h4>Select a Phone</h4> : 
-          <PhoneDetails phoneDetails={phoneDetails}/>
-          }
+          {!phoneDetails ? (
+            <h4>Select a Phone</h4>
+          ) : (
+            <PhoneDetails phoneDetails={phoneDetails} />
+          )}
         </div>
       </div>
+      <footer>
+        <p>By: Alberto Pérez León</p>
+      </footer>
     </div>
   );
 }
